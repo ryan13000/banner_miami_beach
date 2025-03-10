@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Banner</title>
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container_banner {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #101010;
+        }
+
+        .banner {
+            position: relative;
+            width: 512px; /* Largeur modifiée */
+            height: 64px; /* Hauteur modifiée */
+            background-image: linear-gradient(50deg, rgba(184, 55, 55, 0.8), black); /* Le noir est maintenant à droite */
+            background-size: 100% 100%;
+            animation: colorChange 5s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            color: white;
+            text-transform: uppercase;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .weapon-img {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-image: url('https://raw.githubusercontent.com/bitc0de/fivem-items-gallery/main/images/weapons/ap_pistol_blueprint.png'); /* Image du pistolet */
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: weaponAppear 5s ease-in-out infinite;
+        }
+
+        .weapon-img:nth-child(2) {
+            left: 50px;
+            top: 10px;
+            animation-delay: 1s;
+        }
+
+        .weapon-img:nth-child(3) {
+            left: 400px;
+            top: 30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes weaponAppear {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes colorChange {
+            from {
+                background-size: 100% 100%; /* Taille initiale */
+            } 
+            50% {
+                background-size: 500% 500%; /* Taille plus grande pour des mouvements plus amples */
+            } 
+            to {
+                background-size: 100% 100%; /* Retour à la taille initiale */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container_banner">
+        <div class="banner" id="banner">
+            <div class="weapon-img"></div>
+            <div class="weapon-img"></div>
+            <span id="bannerText">GTA Rebel Spirit</span> <!-- Le texte sera remplacé -->
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour récupérer les paramètres de l'URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Appliquer les paramètres dynamiques pour la couleur, l'affichage de l'image et le nom
+        const bannerColor = getUrlParameter('color');
+        const bannerName = getUrlParameter('name');
+        const showImg = getUrlParameter('showImg') === 'true';
+
+        // Modifier la couleur de la bannière
+        if (bannerColor) {
+            document.getElementById('banner').style.backgroundImage = `linear-gradient(90deg, ${bannerColor}, black)`; // Ajusté pour que le noir soit à droite
+        }
+
+        // Modifier le texte de la bannière avec le paramètre 'name'
+        if (bannerName) {
+            document.getElementById('bannerText').innerText = bannerName;
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Banner</title>
+
+    <!-- Ajouter les polices personnalisées dynamiquement -->
+    <link id="fontLink" rel="stylesheet">
+
+    <style>
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container_banner {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner {
+            position: relative;
+            width: 480px;
+            height: 132px;
+            background-image: linear-gradient(0deg, rgba(184, 117, 55, 0.5), black);
+            background-size: 100% 100%;
+            animation: colorChange 3s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fivem-img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: .1;
+            background-size: 100%;
+            animation: backgroundMove 20s infinite ease-in-out;
+        }
+
+        .text {
+            position: relative;
+            font-size: min(max(20px, 7vw), 50px);
+            color: white;
+            font-weight: bold;
+            user-select: none;
+            z-index: 3;
+            text-shadow: 1px 1px 2px #0000007d;
+        }
+
+        .beat-fade-img {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0;
+            animation: beatFade 5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        /* Ajout de plusieurs instances de .beat-fade-img avec différentes positions et délais */
+        .beat-fade-img:nth-child(3) {
+            left: 50px;
+            top: 10px;
+            animation-delay: 0.5s;
+        }
+
+        .beat-fade-img:nth-child(4) {
+            left: 100px;
+            top: 50px;
+            animation-delay: 1s;
+        }
+
+        .beat-fade-img:nth-child(5) {
+            left: 150px;
+            top: 90px;
+            animation-delay: 1.5s;
+        }
+
+        .beat-fade-img:nth-child(6) {
+            left: 200px;
+            top: 30px;
+            animation-delay: 2s;
+        }
+
+        .beat-fade-img:nth-child(7) {
+            left: 250px;
+            top: 70px;
+            animation-delay: 2.5s;
+        }
+
+        .beat-fade-img:nth-child(8) {
+            left: 300px;
+            top: 40px;
+            animation-delay: 3s;
+        }
+
+        .beat-fade-img:nth-child(9) {
+            left: 350px;
+            top: 60px;
+            animation-delay: 3.5s;
+        }
+
+        .beat-fade-img:nth-child(10) {
+            left: 400px;
+            top: 30px;
+            animation-delay: 4s;
+        }
+
+        @keyframes backgroundMove {
+            from {
+                background-position: 0 0;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            to {
+                background-position: 0 0;
+            }
+        }
+
+        @keyframes colorChange {
+            from {
+                background-size: 100% 100%;
+            } 
+            50% {
+                background-size: 300% 300%;
+            } 
+            to {
+                background-size: 100% 100%;
+            }
+        }
+
+        @keyframes beatFade {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container_banner">
+        <div class="banner" id="banner">
+            <span class="text" id="bannerText">Exemple de texte</span>
+            <div class="fivem-img" id="fivemImg"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+            <div class="beat-fade-img"></div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour récupérer les paramètres de l'URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Appliquer les paramètres dynamiques
+        const bannerText = getUrlParameter('name');
+        const bannerColor = getUrlParameter('color');
+        const showImg = getUrlParameter('showImg') === 'true';
+        const fivemImg = getUrlParameter('fivemImg'); // Récupère l'image fivem-img depuis l'URL
+        const beatFadeImg = getUrlParameter('beatFadeImg'); // Récupère l'image beat-fade depuis l'URL
+        const showBeatFade = getUrlParameter('showBeatFade') === 'true'; // Récupère si beat-fade doit être affiché
+        const fontFamily = getUrlParameter('fontFamily') || 'Roboto';  // Récupère la police depuis l'URL
+
+        // Modifier le texte de la bannière
+        if (bannerText) {
+            document.getElementById('bannerText').textContent = bannerText;
+        }
+
+        // Modifier la couleur de la bannière
+        if (bannerColor) {
+            document.getElementById('banner').style.backgroundImage = `linear-gradient(0deg, ${bannerColor}, black)`;
+        }
+
+        // Modifier l'image de fond fivem-img si un paramètre est fourni
+        if (fivemImg) {
+            document.getElementById('fivemImg').style.backgroundImage = `url(${fivemImg})`;
+        }
+
+        // Afficher ou masquer l'image de fond
+        if (!showImg) {
+            document.getElementById('fivemImg').style.display = 'none';
+        }
+
+        // Modifier l'image beat-fade si un paramètre est fourni et si showBeatFade est activé
+        if (beatFadeImg && showBeatFade) {
+            const beatFadeElements = document.querySelectorAll('.beat-fade-img');
+            beatFadeElements.forEach(element => {
+                element.style.backgroundImage = `url(${beatFadeImg})`;
+            });
+        } else if (!showBeatFade) {
+            // Masquer les beat-fade-img si showBeatFade est false
+            const beatFadeElements = document.querySelectorAll('.beat-fade-img');
+            beatFadeElements.forEach(element => {
+                element.style.display = 'none';
+            });
+        }
+
+        // Ajouter dynamiquement la police Google Fonts
+        const fontLink = document.getElementById('fontLink');
+        fontLink.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/\s+/g, '+')}&display=swap`;
+
+        // Appliquer la police à l'élément texte
+        document.querySelector('.text').style.fontFamily = fontFamily;
+    </script>
+</body>
+</html>
